@@ -1,0 +1,51 @@
+#available browsers: CHROME, FIREFOX, IE, EDGE
+#available environments: test
+environment: test
+
+browserSettings:
+  browserName: chrome
+  browserHeadless: false
+  maximizeWindow: true
+
+environments:
+  test:
+    envName: test
+    urls:
+      home: http://146.59.32.4/index.php
+      basket: http://146.59.32.4/index.php?controller=cart&action=show
+      login: http://146.59.32.4/index.php?controller=authentication&back=my-account
+    explicitWaitTimeout: 15
+    shippingPrice: 7.00
+    searchTests:
+      keyword: HUMMINGBIRD
+    filterTests:
+      minPrice: 13
+      maxPrice: 15
+      category: ACCESSORIES
+    basketTests:
+      category: ART
+      productName: THE BEST IS YET POSTER
+      productQuantity: 3
+    checkoutTests:
+      paymentStatus: Awaiting check payment
+      user:
+        firstName: Tomasz
+        lastName: Fromage
+        email: tomasz.fromage@test.pl
+        password: tomfrom
+      deliveryAddress:
+        address: test 1a/2
+        postCode: 12-345
+        city: Test City
+        country: Poland
+      invoiceAddress:
+        address: gouda street
+        postCode: 12-345
+        city: Turek
+        country: Poland
+      product:
+        category: ART
+        name: THE BEST IS YET POSTER
+        quantity: 1
+
+
