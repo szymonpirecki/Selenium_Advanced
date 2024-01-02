@@ -3,8 +3,8 @@ package utils.dataGeneration;
 import com.github.javafaker.Faker;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import model.user.SocialTitle;
 import model.user.User;
-import model.user.enums.SocialTitle;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

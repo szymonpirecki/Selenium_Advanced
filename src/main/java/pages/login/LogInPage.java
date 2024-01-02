@@ -19,9 +19,9 @@ public class LogInPage extends BasePage {
     private WebElement signInBtn;
 
     public void logIn(String email, String password){
-        clearAndSendKeys(emailInput, email);
-        clearAndSendKeys(passwordInput, password);
-        clickOnBtn(signInBtn);
+        sendKeys(emailInput, email);
+        sendKeys(passwordInput, password);
+        click(signInBtn);
     }
 
 }

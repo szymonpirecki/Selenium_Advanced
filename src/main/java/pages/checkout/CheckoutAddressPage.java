@@ -4,7 +4,6 @@ import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.Select;
 import pages.base.BasePage;
 
 @Getter
@@ -27,22 +26,19 @@ public class CheckoutAddressPage extends BasePage {
     @FindBy(css = "button[name='confirm-addresses']")
     WebElement confirmAddressButton;
 
-    public CheckoutAddressPage clickDifferentInvoiceAddressLink() {
-        clickOnBtn(differentInvoiceAddressLink);
-        return this;
+    public void clickDifferentInvoiceAddressLink() {
+        click(differentInvoiceAddressLink);
     }
 
-    public CheckoutAddressPage provideAddress(String address, String postCode, String city, String country) {
-        clearAndSendKeys(addressInput, address);
-        clearAndSendKeys(postCodeInput, postCode);
-        clearAndSendKeys(cityInput, city);
-        Select select = new Select(countrySelect);
-        select.selectByVisibleText(country);
-        return this;
+    public void provideAddress(String address, String postCode, String city, String country) {
+        sendKeys(addressInput, address);
+        sendKeys(postCodeInput, postCode);
+        sendKeys(cityInput, city);
+        selectByVisibleText(countrySelect, country);
     }
 
     public void clickConfirmAddressBtn() {
-        clickOnBtn(confirmAddressButton);
+        click(confirmAddressButton);
     }
 
 }

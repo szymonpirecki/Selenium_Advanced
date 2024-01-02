@@ -14,8 +14,10 @@ environments:
       home: http://146.59.32.4/index.php
       basket: http://146.59.32.4/index.php?controller=cart&action=show
       login: http://146.59.32.4/index.php?controller=authentication&back=my-account
-    explicitWaitTimeout: 15
-    shippingPrice: 7.00
+    explicitWaitTimeout: 5
+    shippingPrice: 7
+    market: US
+    currency: $
     searchTests:
       keyword: HUMMINGBIRD
     filterTests:

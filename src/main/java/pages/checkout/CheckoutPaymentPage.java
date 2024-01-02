@@ -19,17 +19,15 @@ public class CheckoutPaymentPage extends BasePage {
     @FindBy(css = "#payment-confirmation button[type='submit']")
     private WebElement placeOrderBtn;
 
-    public CheckoutPaymentPage selectPayByCheck() {
+    public void selectPayByCheck() {
         payByCheckRadioBtn.click();
-        return this;
     }
 
-    public CheckoutPaymentPage approveConditions() {
+    public void approveConditions() {
         conditionsToApproveCheckbox.click();
-        return this;
     }
 
     public void clickPlaceOrderBtn() {
-        clickOnBtn(placeOrderBtn);
+        click(placeOrderBtn);
     }
 }

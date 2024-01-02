@@ -1,15 +1,15 @@
 package model.basket;
 
-import lombok.ToString;
-import model.product.Product;
-import pages.basket.BasketLineComponent;
-import pages.basket.BasketPage;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-@ToString
+@Slf4j
+@Getter
 public class Basket {
     private final List<BasketLine> basketContent;
 
@@ -17,56 +17,45 @@ public class Basket {
         this.basketContent = new ArrayList<>();
     }
 
-    public Basket(BasketPage basketPage) {
-        List<BasketLineComponent> basketLinesComponents = basketPage.getBasketLines();
-        this.basketContent = basketLinesComponents.stream()
-                .map(blc -> new BasketLine(new Product(blc.getProductName(), blc.getProductPrice()), blc.getProductQuantity()))
-                .toList();
+    public Basket(List<BasketLine> basketContent) {
+        this.basketContent = basketContent;
     }
 
     public void addToBasket(Product product, int productQuantity) {
-        long count = basketContent.stream()
+        Optional<BasketLine> basketLine = basketContent.stream()
                 .filter(bl -> bl.getProduct().getName().equals(product.getName()))
-                .count();
-        switch ((int) count) {
-            case 0 -> basketContent.add(new BasketLine(product, productQuantity));
-            case 1 -> updateContent(product, productQuantity);
-        }
+                .findAny();
+        basketLine.ifPresentOrElse(
+                bl -> updateQuantity(bl, productQuantity),
+                () -> basketContent.add(new BasketLine(product, productQuantity))
+        );
     }
 
-    public void removeFromBasket(BasketLineComponent basketLineComponent) {
-        if (!basketContent.isEmpty())
-            basketContent.removeIf(bl -> bl.getProduct().getName().equals(basketLineComponent.getProductName()));
+    private void updateQuantity(BasketLine basketLine, int additionalQuantity) {
+        basketLine.setQuantity(basketLine.getQuantity() + additionalQuantity);
     }
 
-    private void updateContent(Product product, int productQuantity) {
-        basketContent.forEach(bl -> {
-            if (bl.getProduct().getName().equals(product.getName())) {
-                bl.setQuantity(bl.getQuantity() + productQuantity);
-            }
-        });
+    public void removeFromBasket(BasketLine basketLine) {
+        basketContent.removeIf(bl ->
+                bl.getProduct().getName().equals(basketLine.getProduct().getName()));
     }
 
-    public int getProductCount(){
-        int sum = 0;
-        for (BasketLine basketLine : basketContent){
-            sum += basketLine.getQuantity();
-        }
-        return sum;
+    public int getProductCount() {
+        return basketContent.stream()
+                .mapToInt(BasketLine::getQuantity)
+                .sum();
     }
 
-    public BigDecimal getProductsValue(){
-        BigDecimal sum = new BigDecimal("0");
-        for (BasketLine basketLine : basketContent){
-            sum = sum.add(basketLine.getTotalPrice());
-        }
-        return sum;
+    public BigDecimal getProductsValue() {
+        return basketContent.stream()
+                .map(BasketLine::getTotalPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public BigDecimal getBasketTotalValue(){
-        if (basketContent.isEmpty())
+    public BigDecimal getBasketTotalValue() {
+        if (basketContent.isEmpty()) {
             return BigDecimal.ZERO;
+        }
         return getProductsValue().add(new BigDecimal(System.getProperty("shippingPrice")));
     }
-
 }

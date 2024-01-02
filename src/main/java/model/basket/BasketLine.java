@@ -2,14 +2,11 @@ package model.basket;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import model.product.Product;
 
 import java.math.BigDecimal;
 
 @Getter
 @Setter
-@ToString
 public class BasketLine {
 
     private Product product;

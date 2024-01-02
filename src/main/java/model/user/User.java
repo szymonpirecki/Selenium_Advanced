@@ -2,7 +2,6 @@ package model.user;
 
 import lombok.Getter;
 import lombok.Setter;
-import model.user.enums.SocialTitle;
 
 import java.util.Date;
 

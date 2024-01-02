@@ -58,19 +58,4 @@ public class EnvironmentHandler {
             }
         }
     }
-
-
-//    private static void setSystemPropertyForMap(Map<String, Object> map, String parentKey) {
-//        for (Map.Entry<String, Object> entry : map.entrySet()) {
-//            String key = parentKey + "-" + entry.getKey();
-//            Object value = entry.getValue();
-//            if (value == null) {
-//                log.error("{} = null. Value can't be null", key);
-//                throw new RuntimeException("Value for key " + key + " cannot be null.");
-//            } else {
-//                System.setProperty(key, value.toString());
-//                log.debug("{} = {}", key, value);
-//            }
-//        }
-//    }
 }

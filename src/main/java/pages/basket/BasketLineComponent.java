@@ -1,5 +1,8 @@
 package pages.basket;
 
+import model.basket.BasketLine;
+import model.basket.BasketLineQueryable;
+import model.basket.Product;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -8,7 +11,7 @@ import pages.base.BasePage;
 
 import java.math.BigDecimal;
 
-public class BasketLineComponent extends BasePage {
+public class BasketLineComponent extends BasePage implements BasketLineQueryable {
     public BasketLineComponent(WebDriver driver, WebElement parent) {
         super(driver, parent);
     }
@@ -21,9 +24,6 @@ public class BasketLineComponent extends BasePage {
 
     @FindBy(css = ".js-cart-line-product-quantity")
     private WebElement productQuantity;
-
-    @FindBy(css = ".product-price strong")
-    private WebElement productTotalPrice;
 
     @FindBy(css = ".remove-from-cart")
     private WebElement removeFromCartBtn;
@@ -41,8 +41,12 @@ public class BasketLineComponent extends BasePage {
     }
 
     public void clickRemoveBtn() {
-        clickOnBtn(removeFromCartBtn);
+        click(removeFromCartBtn);
         defaultWait.until(ExpectedConditions.stalenessOf(removeFromCartBtn));
     }
 
+    @Override
+    public BasketLine toBasketLineModel() {
+        return new BasketLine(new Product(getProductName(), getProductPrice()), getProductQuantity());
+    }
 }

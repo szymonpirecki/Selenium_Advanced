@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import pages.base.BasePage;
-import pages.basket.AddedToCartPopUpPage;
+import pages.basket.BasketPopUpPage;
 
 import java.math.BigDecimal;
 
@@ -25,16 +25,12 @@ public class ProductPage extends BasePage {
     private WebElement currentPrice;
 
     public ProductPage setQuantity(int quantity) {
-        clearAndSendKeys(quantityInput, String.valueOf(quantity));
+        sendKeys(quantityInput, String.valueOf(quantity));
         return this;
     }
 
     public void clickAddToCart() {
-        clickOnBtn(addToCartBtn);
-        new AddedToCartPopUpPage(driver);
-    }
-
-    public BigDecimal getPrice() {
-        return getBigDecimal(currentPrice);
+        click(addToCartBtn);
+        new BasketPopUpPage(driver);
     }
 }

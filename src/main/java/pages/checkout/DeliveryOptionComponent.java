@@ -19,14 +19,13 @@ public class DeliveryOptionComponent extends BasePage {
     private WebElement radioButton;
 
     public BigDecimal getPrice() {
-        if (price.getText().equalsIgnoreCase("free"))
+        if (price.getText().equalsIgnoreCase("free")) {
             return new BigDecimal(0);
+        }
         return getBigDecimal(price);
     }
 
     public void selectDeliveryOption() {
-        if (radioButton.isSelected())
-            return;
-        radioButton.click();
+        selectRadioButton(radioButton);
     }
 }

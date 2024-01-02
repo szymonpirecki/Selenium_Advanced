@@ -1,48 +1,56 @@
 package pages.product;
 
 import lombok.extern.slf4j.Slf4j;
+import model.basket.Product;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import pages.base.BasePage;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 @Slf4j
 public class ProductGridPage extends BasePage {
     public ProductGridPage(WebDriver driver) {
         super(driver);
+        waitForAllElements(productsOnGrid);
     }
 
-    @FindAll(@FindBy(css = ".product"))
+    @FindBy(css = ".product")
     private List<WebElement> productsOnGrid;
 
-    public int getNumberOfDisplayedProducts() {
-        waitForAllElements(productsOnGrid);
+    public int getProductCount() {
         return productsOnGrid.size();
     }
 
-    public List<ProductMiniatureComponent> getProductsList() {
-        waitForAllElements(productsOnGrid);
+    public List<ProductMiniatureComponent> getProductsMiniatureList() {
         return productsOnGrid.stream()
                 .map(p -> new ProductMiniatureComponent(driver, p))
                 .toList();
     }
 
-    public String getRandomProductName() {
-        waitForAllElements(productsOnGrid);
-        List<ProductMiniatureComponent> productsList = getProductsList();
-        return productsList.get(random.nextInt(productsList.size())).getProductTitle();
+    public List<Product> getProductsList() {
+        return getProductsMiniatureList().stream()
+                .map(ProductMiniatureComponent::toProductModel)
+                .toList();
     }
 
-    public ProductPage goToProductPageByName(String productName) {
-        waitForAllElements(productsOnGrid);
-        Optional<ProductMiniatureComponent> any = getProductsList().stream()
+
+    public void goToProductPage(String productName) {
+        getProductsMiniatureList().stream()
                 .filter(p -> p.getProductTitle().equalsIgnoreCase(productName))
-                .findAny();
-        any.ifPresent(ProductMiniatureComponent::goToProductPage);
-        return new ProductPage(driver);
+                .findAny()
+                .orElseThrow(() -> new NoSuchElementException("Product not found: " + productName))
+                .goToProductPage();
     }
+
+
+    public Product getSpecificProduct(String productName) {
+        return getProductsList().stream()
+                .filter(p -> p.getName().equals(productName))
+                .findAny()
+                .orElseThrow(() -> new NoSuchElementException("Product not found: " + productName));
+    }
+
 }

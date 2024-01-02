@@ -11,10 +11,10 @@ public class OrderConfirmationPage extends BasePage {
     }
 
     @FindBy(css = "#order-details > ul li:nth-of-type(1)")
-    private WebElement orderReferenceNumberLine;
+    private WebElement orderReferenceNumber;
 
     public String getOrderReferenceNumber() {
         String prefix = "Order reference: ";
-        return orderReferenceNumberLine.getText().substring(prefix.length());
+        return orderReferenceNumber.getText().substring(prefix.length());
     }
 }

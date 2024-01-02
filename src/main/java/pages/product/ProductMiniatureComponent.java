@@ -1,5 +1,7 @@
 package pages.product;
 
+import model.basket.Product;
+import model.basket.ProductQueryable;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -7,7 +9,7 @@ import pages.base.BasePage;
 
 import java.math.BigDecimal;
 
-public class ProductMiniatureComponent extends BasePage {
+public class ProductMiniatureComponent extends BasePage implements ProductQueryable {
 
     public ProductMiniatureComponent(WebDriver driver, WebElement parent) {
         super(driver, parent);
@@ -34,5 +36,11 @@ public class ProductMiniatureComponent extends BasePage {
     public void goToProductPage() {
         waitForElement(productTitle);
         productTitle.click();
+    }
+
+
+    @Override
+    public Product toProductModel() {
+        return new Product(getProductTitle(), getProductPrice());
     }
 }

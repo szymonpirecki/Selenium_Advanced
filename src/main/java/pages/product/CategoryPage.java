@@ -1,16 +1,13 @@
 package pages.product;
 
-import lombok.Getter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import pages.base.BasePage;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
-@Getter
 public class CategoryPage extends BasePage {
     public CategoryPage(WebDriver driver) {
         super(driver);
@@ -25,7 +22,7 @@ public class CategoryPage extends BasePage {
     @FindBy(css = ".category-top-menu")
     private WebElement categoryTopMenu;
 
-    @FindAll(@FindBy(css = ".category-sub-menu a"))
+    @FindBy(css = ".category-sub-menu a")
     private List<WebElement> subCategories;
 
     @FindBy(css = ".block-category > h1")
@@ -35,13 +32,13 @@ public class CategoryPage extends BasePage {
         return !subCategories.isEmpty();
     }
 
-    public void goToSubCategoryByName(String subCategoryName) {
+    public void goToSubCategory(String subCategoryName) {
         waitForAllElements(subCategories);
-        Optional<WebElement> category = subCategories.stream()
+        subCategories.stream()
                 .filter(c -> c.getText().equalsIgnoreCase(subCategoryName))
-                .findAny();
-        category.ifPresent(WebElement::click);
-        new CategoryPage(driver);
+                .findAny()
+                .orElseThrow(() -> new NoSuchElementException("Subcategory not found: " + subCategoryName))
+                .click();
     }
 
     public List<String> getSubCategoryNames() {
@@ -50,4 +47,13 @@ public class CategoryPage extends BasePage {
                 .map(WebElement::getText)
                 .toList();
     }
+
+    public int getTotalProductsCount(){
+        return getInt(totalProductsLbl);
+    }
+
+    public String getCategoryHeader(){
+        return categoryHeader.getText();
+    }
+
 }
